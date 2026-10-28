@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11131d">
+  <title>Poki+ — Deine Spielewelt</title>
+  <style>
+    :root { color-scheme: dark; --bg:#11131d; --panel:#1a1d2b; --panel2:#22263a; --text:#f5f6ff; --muted:#a6abc2; --pink:#ff4f9a; --violet:#9177ff; --line:rgba(255,255,255,.09); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; min-height:100vh; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:radial-gradient(ellipse at top left,rgba(145,119,255,.18),transparent 35%),radial-gradient(ellipse at top right,rgba(255,79,154,.12),transparent 30%),var(--bg); color:var(--text); }
+    button,input { font:inherit; }
+    button { cursor:pointer; }
+    .shell { max-width:1240px; margin:auto; padding:0 24px 48px; }
+    header { height:84px; display:flex; align-items:center; justify-content:space-between; gap:18px; border-bottom:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:12px; color:var(--text); text-decoration:none; font-weight:900; font-size:25px; letter-spacing:-1px; }
+    .brand-mark { display:grid; place-items:center; height:43px; width:43px; border-radius:14px; background:linear-gradient(135deg,var(--pink),var(--violet)); box-shadow:0 7px 25px #9c4bba50; font-size:24px; }
+    .brand-plus { color:#ff79b2; }
+    .github-link { color:#d8dbef; text-decoration:none; border:1px solid var(--line); background:#ffffff08; padding:10px 14px; border-radius:12px; font-size:13px; font-weight:700; }
+    .github-link:hover { background:#ffffff12; }
+    .hero { padding:48px 0 28px; }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; border:1px solid #ab8fff45; border-radius:999px; padding:7px 11px; color:#d9ceff; background:#9177ff12; font-size:12px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; }
+    h1 { margin:18px 0 10px; font-size:clamp(38px,6vw,68px); line-height:1.02; letter-spacing:-.055em; }
+    h1 .shine { background:linear-gradient(90deg,#ff77ae,#a895ff 75%); color:transparent; background-clip:text; -webkit-background-clip:text; }
+    .intro { max-width:640px; color:var(--muted); line-height:1.65; font-size:16px; margin:0; }
+    .toolbar { margin:22px 0 20px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .search-wrap { min-width:240px; flex:1; position:relative; }
+    .search-wrap span { position:absolute; left:15px; top:50%; transform:translateY(-50%); font-size:17px; opacity:.65; }
+    #search { width:100%; border:1px solid var(--line); border-radius:14px; background:#191c2a; padding:14px 16px 14px 44px; color:var(--text); outline:none; }
+    #search:focus { border-color:#ad91ff; box-shadow:0 0 0 3px #9177ff20; }
+    .refresh { border:0; border-radius:14px; padding:14px 17px; font-weight:800; color:white; background:linear-gradient(135deg,#ff4f9a,#8d68ff); box-shadow:0 8px 25px #9b5bba2b; }
+    .refresh:disabled { opacity:.55; cursor:wait; }
+    .section-head { display:flex; justify-content:space-between; align-items:end; gap:14px; margin:26px 0 16px; }
+    h2 { font-size:22px; margin:0; letter-spacing:-.03em; }
+    #count { color:var(--muted); font-size:13px; }
+    .grid { display:grid; grid-template-columns:repeat( auto-fill, minmax(220px,1fr)); gap:16px; }
+    .game-card { text-align:left; color:inherit; border:1px solid var(--line); background:linear-gradient(150deg,#24283b,#191c29 70%); border-radius:20px; padding:0; overflow:hidden; transition:transform .18s,border-color .18s,box-shadow .18s; min-width:0; }
+    .game-card:hover { transform:translateY(-4px); border-color:#b39cff7a; box-shadow:0 14px 34px #0004; }
+    .cover { height:142px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; background:linear-gradient(135deg,var(--c1),var(--c2)); }
+    .cover::before,.cover::after { content:""; position:absolute; border:1px solid #ffffff25; border-radius:35%; width:150px; height:150px; transform:rotate(29deg); }
+    .cover::after { width:95px; height:95px; transform:rotate(-24deg); }
+    .cover-emoji { z-index:1; font-size:55px; filter:drop-shadow(0 8px 9px #0003); }
+    .html-tag { position:absolute; top:12px; left:12px; z-index:2; font-size:10px; font-weight:900; padding:5px 8px; border-radius:7px; background:#141625c9; border:1px solid #ffffff27; letter-spacing:.06em; }
+    .play-icon { position:absolute; right:12px; bottom:12px; width:36px; height:36px; border-radius:50%; display:grid; place-items:center; background:#fff; color:#202033; font-size:15px; z-index:2; }
+    .card-body { padding:15px 16px 16px; }
+    .game-title { font-size:16px; font-weight:850; overflow-wrap:anywhere; margin:0 0 7px; }
+    .game-path { font-size:11px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .status { padding:24px; margin-top:10px; border:1px dashed #ffffff25; border-radius:18px; color:var(--muted); text-align:center; line-height:1.6; }
+    .status strong { color:var(--text); display:block; margin-bottom:6px; }
+    .status .small { font-size:12px; }
+    footer { margin-top:40px; border-top:1px solid var(--line); padding-top:18px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:#888da7; font-size:12px; line-height:1.5; }
+    footer a { color:#c4b7ff; }
+    .modal { display:none; position:fixed; inset:0; z-index:20; background:#080911f5; padding:18px; }
+    .modal.open { display:flex; flex-direction:column; }
+    .player-head { display:flex; align-items:center; gap:10px; min-height:54px; padding:0 0 14px; }
+    .player-title { font-weight:850; font-size:16px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-right:auto; }
+    .player-button { border:1px solid #ffffff23; color:white; background:#ffffff0d; border-radius:11px; padding:10px 13px; font-weight:750; }
+    .player-button:hover { background:#ffffff1a; }
+    #frameShell { background:#161827; border:1px solid #ffffff21; border-radius:14px; overflow:hidden; flex:1; min-height:0; position:relative; }
+    #gameFrame { display:block; width:100%; height:100%; min-height:240px; border:0; background:#fff; }
+    .player-note { font-size:11px; color:#8c91aa; padding:10px 0 0; }
+    .spinner { width:18px;height:18px;border:2px solid #ffffff35;border-top-color:#fff;border-radius:50%;display:inline-block;animation:spin .8s linear infinite;vertical-align:middle;margin-right:8px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    @media(max-width:600px) { .shell{padding:0 15px 32px} header{height:70px}.brand{font-size:22px}.hero{padding:35px 0 18px}.intro{font-size:14px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.cover{height:112px}.cover-emoji{font-size:43px}.card-body{padding:12px}.game-title{font-size:14px}.game-path{font-size:10px}.modal{padding:8px}.player-head{gap:6px}.player-button{padding:9px 10px;font-size:12px} }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="#top" aria-label="Poki+ Startseite"><span class="brand-mark">▶</span><span>Poki<span class="brand-plus">+</span></span></a>
+      <a class="github-link" href="https://github.com/JohannaGansch/Poki-/tree/main/Poki%2B_spiele" target="_blank" rel="noopener noreferrer">⌘ GitHub-Ordner ↗</a>
+    </header>
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow">✦ Deine Spielewelt</div>
+        <h1>Spiel an. Welt aus.<br><span class="shine">Poki+.</span></h1>
+        <p class="intro">Deine HTML-Spiele an einem Ort. Such dir ein Spiel aus und öffne es direkt hier — auf Wunsch auch im Vollbild.</p>
+      </section>
+      <div class="toolbar">
+        <label class="search-wrap"><span>⌕</span><input id="search" type="search" placeholder="Spiele suchen …" autocomplete="off" aria-label="Spiele suchen"></label>
+        <button class="refresh" id="refresh">↻ Spiele laden</button>
+      </div>
+      <div class="section-head"><h2>Alle Spiele</h2><div id="count">Lade Spiele …</div></div>
+      <div id="status" class="status"><span class="spinner"></span>Spiele werden aus GitHub geladen …</div>
+      <section id="games" class="grid" aria-label="HTML-Spiele"></section>
+    </main>
+    <footer><span>© Poki+ · Eine Spiele-Galerie für HTML-Dateien</span><span>Es werden nur Dateien aus <code>Poki+_spiele</code> mit der Endung <code>.html</code> angezeigt.</span></footer>
+  </div>
+
+  <section class="modal" id="player" role="dialog" aria-modal="true" aria-label="Spieler">
+    <div class="player-head">
+      <button class="player-button" id="close">← Zurück</button>
+      <div class="player-title" id="playerTitle">Spiel</div>
+      <button class="player-button" id="reloadGame" title="Spiel neu laden">↻</button>
+      <button class="player-button" id="fullscreen">⛶ Vollbild</button>
+      <button class="player-button" id="closeX" aria-label="Spiel schließen" title="Schließen">✕</button>
+    </div>
+    <div id="frameShell"><iframe id="gameFrame" title="Ausgewähltes HTML-Spiel" sandbox="allow-scripts allow-forms allow-same-origin allow-pointer-lock allow-downloads" allow="fullscreen; autoplay; gamepad" allowfullscreen referrerpolicy="no-referrer"></iframe></div>
+    <div class="player-note">Das Spiel läuft in einem separaten, eingeschränkten Fenster. Manche Spiele blockieren Einbettung oder benötigen zusätzliche Dateien.</div>
+  </section>
+
+  <script>
+    (() => {
+      const OWNER = 'JohannaGansch';
+      const REPO = 'Poki-';
+      const BRANCH = 'main';
+      const FOLDER = 'Poki+_spiele';
+      const TREE_API = `https://api.github.com/repos/${OWNER}/${REPO}/git/trees/${BRANCH}?recursive=1`;
+      const PREVIEW_BASE = 'https://html-preview.github.io/?url=';
+      const gamesEl = document.getElementById('games');
+      const statusEl = document.getElementById('status');
+      const countEl = document.getElementById('count');
+      const searchEl = document.getElementById('search');
+      const refreshBtn = document.getElementById('refresh');
+      const player = document.getElementById('player');
+      const frame = document.getElementById('gameFrame');
+      const frameShell = document.getElementById('frameShell');
+      const playerTitle = document.getElementById('playerTitle');
+      let allGames = [];
+      let activeGame = null;
+      const emojis = ['🎮','🚗','🦖','🚀','⚽','🧩','🏎️','🐱','🏰','✨','🎯','🛸'];
+      const gradients = [ ['#ff619f','#784cff'], ['#ff9b55','#ed4c83'], ['#42c9c5','#4260d9'], ['#8c74ff','#dc63bc'], ['#65d66c','#159eae'], ['#ffce55','#fb7b59'] ];
+
+      function showStatus(title, message, small = '') {
+        statusEl.hidden = false;
+        statusEl.innerHTML = `<strong>${escapeHtml(title)}</strong><div>${escapeHtml(message)}</div>${small ? `<div class="small">${escapeHtml(small)}</div>` : ''}`;
+      }
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+      }
+      function encodePath(path) { return path.split('/').map(encodeURIComponent).join('/'); }
+      function makePreviewUrl(path) {
+        const githubFileUrl = `https://github.com/${OWNER}/${REPO}/blob/${BRANCH}/${encodePath(path)}`;
+        return PREVIEW_BASE + encodeURIComponent(githubFileUrl);
+      }
+      function gameName(path) {
+        const file = path.split('/').pop().replace(/\.html$/i, '');
+        return file.replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim().replace(/\b\w/g, c => c.toUpperCase()) || file;
+      }
+      function renderGames() {
+        const query = searchEl.value.trim().toLowerCase();
+        const visible = allGames.filter(g => g.path.toLowerCase().includes(query) || g.name.toLowerCase().includes(query));
+        gamesEl.innerHTML = '';
+        countEl.textContent = `${visible.length} ${visible.length === 1 ? 'Spiel' : 'Spiele'}`;
+        if (!visible.length) {
+          showStatus(allGames.length ? 'Kein Spiel gefunden' : 'Noch keine HTML-Spiele gefunden', allGames.length ? 'Versuche einen anderen Suchbegriff.' : 'Im ausgewählten GitHub-Ordner wurde keine .html-Datei gefunden.', 'Es werden nur HTML-Dateien angezeigt.');
+          return;
+        }
+        statusEl.hidden = true;
+        visible.forEach((g, index) => {
+          const color = gradients[index % gradients.length];
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'game-card';
+          const subPath = g.path.startsWith(FOLDER + '/') ? g.path.slice(FOLDER.length + 1) : g.path;
+          const displayPath = subPath.includes('/') ? subPath.split('/').slice(0, -1).join('/') : 'HTML-Spiel';
+          card.innerHTML = `<div class="cover" style="--c1:${color[0]};--c2:${color[1]}"><span class="html-tag">HTML5</span><span class="cover-emoji">${emojis[index % emojis.length]}</span><span class="play-icon">▶</span></div><div class="card-body"><div class="game-title">${escapeHtml(g.name)}</div><div class="game-path" title="${escapeHtml(subPath)}">${escapeHtml(displayPath)}</div></div>`;
+          card.addEventListener('click', () => openGame(g));
+          gamesEl.appendChild(card);
+        });
+      }
+      async function loadGames() {
+        refreshBtn.disabled = true;
+        refreshBtn.textContent = 'Lädt …';
+        gamesEl.innerHTML = '';
+        showStatus('GitHub wird durchsucht', 'Die HTML-Spiele werden gesucht …');
+        countEl.textContent = 'Lade Spiele …';
+        try {
+          const response = await fetch(TREE_API, { headers: { 'Accept': 'application/vnd.github+json' } });
+          if (!response.ok) {
+            if (response.status === 404) throw new Error('Der GitHub-Ordner oder das Repository wurde nicht gefunden. Prüfe, ob das Repository öffentlich ist und der Branch „main“ heißt.');
+            if (response.status === 403) throw new Error('GitHub begrenzt gerade die Anfragen. Warte kurz und klicke dann auf „Spiele laden“.');
+            throw new Error(`GitHub antwortet mit Fehler ${response.status}.`);
+          }
+          const data = await response.json();
+          if (data.truncated) throw new Error('GitHub hat die Dateiliste gekürzt. Der Ordner enthält möglicherweise zu viele Dateien.');
+          allGames = (data.tree || [])
+            .filter(item => item.type === 'blob' && item.path.startsWith(FOLDER + '/') && /\.html$/i.test(item.path))
+            .map(item => ({ path: item.path, name: gameName(item.path) }))
+            .sort((a, b) => a.name.localeCompare(b.name, 'de'));
+          renderGames();
+          if (allGames.length) countEl.textContent = `${allGames.length} ${allGames.length === 1 ? 'Spiel gefunden' : 'Spiele gefunden'}`;
+        } catch (error) {
+          allGames = [];
+          showStatus('Spiele konnten nicht geladen werden', error.message || 'Bitte prüfe deine Internetverbindung.', 'Tipp: Bei einem privaten Repository kann Poki+ die Dateiliste ohne Anmeldung nicht abrufen.');
+          countEl.textContent = 'Laden fehlgeschlagen';
+        } finally {
+          refreshBtn.disabled = false;
+          refreshBtn.textContent = '↻ Spiele laden';
+        }
+      }
+      function openGame(game) {
+        activeGame = game;
+        playerTitle.textContent = game.name;
+        frame.src = makePreviewUrl(game.path);
+        player.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        document.getElementById('close').focus();
+      }
+      function closeGame() {
+        player.classList.remove('open');
+        document.body.style.overflow = '';
+        if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+        frame.src = 'about:blank';
+        activeGame = null;
+      }
+      document.getElementById('close').addEventListener('click', closeGame);
+      document.getElementById('closeX').addEventListener('click', closeGame);
+      document.getElementById('reloadGame').addEventListener('click', () => { if (activeGame) frame.src = makePreviewUrl(activeGame.path); });
+      document.getElementById('fullscreen').addEventListener('click', async () => {
+        try {
+          if (document.fullscreenElement) await document.exitFullscreen();
+          else await (frameShell.requestFullscreen ? frameShell.requestFullscreen() : frame.requestFullscreen());
+        } catch (error) {
+          alert('Der Browser hat den Vollbildmodus blockiert. Versuche es noch einmal oder erlaube Vollbild für diese Seite.');
+        }
+      });
+      refreshBtn.addEventListener('click', loadGames);
+      searchEl.addEventListener('input', renderGames);
+      document.addEventListener('keydown', event => { if (event.key === 'Escape' && player.classList.contains('open') && !document.fullscreenElement) closeGame(); });
+      loadGames();
+    })();
+  </script>
+</body>
+</html>
